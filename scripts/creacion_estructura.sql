@@ -5,7 +5,7 @@ SET search_path TO maneja_seguro;
 
 DROP TABLE IF EXISTS cliente;
 CREATE TABLE cliente (
-    dni_cliente integer NOT NULL PRIMARY KEY,
+    dni_cliente integer NOT NULL,
     nombre varchar(20) NOT NULL,
     apellido varchar(20) NOT NULL,
     direccion varchar(50) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE cliente (
 
 DROP TABLE IF EXISTS secretaria;
 CREATE TABLE secretaria (
-    dni_secretaria integer NOT NULL PRIMARY KEY,
+    dni_secretaria integer NOT NULL,
     nombre varchar(20) NOT NULL,
     apellido varchar(20) NOT NULL,
     direccion varchar(50) NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE secretaria (
 
 DROP TABLE IF EXISTS mecanico;
 CREATE TABLE mecanico (
-    dni_mecanico integer NOT NULL PRIMARY KEY,
+    dni_mecanico integer NOT NULL,
     nombre varchar(20) NOT NULL,
     apellido varchar(20) NOT NULL,
     direccion varchar(50) NOT NULL,
@@ -41,27 +41,27 @@ CREATE TABLE telefono (
 
 DROP TABLE IF EXISTS cargo;
 CREATE TABLE cargo (
-    cod_cargo serial NOT NULL PRIMARY KEY,
+    cod_cargo serial NOT NULL,
     descripcion varchar(100) NOT NULL,
 	CONSTRAINT pkCod_cargo PRIMARY KEY (cod_cargo)
 );
 
 DROP TABLE IF EXISTS instructor;
 CREATE TABLE instructor (
-    dni_instructor integer NOT NULL PRIMARY KEY,
+    dni_instructor integer NOT NULL,
     nombre varchar(20) NOT NULL,
     apellido varchar(20) NOT NULL,
     direccion varchar(50) NOT NULL,
     carnet varchar(20) NOT NULL,
     cod_cargo integer NOT NULL,
-	CONSTRAINT pkInstructor PRIMARY KEY (dni_instructor);
+	CONSTRAINT pkInstructor PRIMARY KEY (dni_instructor),
     CONSTRAINT tipo_carnet CHECK (carnet IN ('B2','B3','C1')),
     CONSTRAINT fkcargo FOREIGN KEY (cod_cargo) REFERENCES cargo ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS clase;
 CREATE TABLE clase (
-    cod_clase serial NOT NULL PRIMARY KEY,
+    cod_clase serial NOT NULL,
     nombre varchar(20) NOT NULL,
     descripcion varchar(100) NOT NULL,
     cupo_max integer NOT NULL,
@@ -92,7 +92,7 @@ CREATE TABLE dicta (
 
 DROP TABLE IF EXISTS material;
 CREATE TABLE material (
-    nro_material integer NOT NULL PRIMARY KEY,
+    nro_material integer NOT NULL,
     descripcion varchar(100) NOT NULL,
     costo integer NOT NULL,
     dni_instructor integer NOT NULL,
@@ -103,14 +103,16 @@ CREATE TABLE material (
 
 DROP TABLE IF EXISTS auditoria_costos;
 CREATE TABLE auditoria_costos (
-    id serial PRIMARY KEY,
+    id serial,
     nro_material integer NOT NULL,
     fecha_del_cambio timestamp NOT NULL,
     costo_anterior integer NOT NULL,
     costo_nuevo integer NOT NULL,
-    usuario varchar(50) NOT NULL
+    usuario varchar(50) NOT NULL,
+	CONSTRAINT pkAuditoria_costos PRIMARY KEY (id)
 );
 
+-- TRIGGER sobre los cambios en Los costos de los materiales
 create or replace function cambios_auditoria() 
 returns Trigger as 
 $$
@@ -126,3 +128,26 @@ after update on material
 for each row
 execute function cambios_auditoria();
 
+-- TRIGGER para que no haya más clientes inscriptos que el cupo máximo de la clase.
+CREATE OR REPLACE FUNCTION controlar_cupo_max() 
+RETURNS TRIGGER AS 
+$$
+DECLARE
+    cantidad_inscriptos INTEGER;
+    cupo_maximo INTEGER;
+BEGIN
+    SELECT COUNT(*) INTO cantidad_inscriptos FROM asiste WHERE cod_clase = NEW.cod_clase;
+    SELECT cupo_max INTO cupo_maximo FROM clase WHERE cod_clase = NEW.cod_clase;
+
+    IF cantidad_inscriptos > cupo_maximo THEN
+        RAISE EXCEPTION 'Se ha alcanzado el cupo máximo de la clase';
+    END IF;
+
+    RETURN NEW;
+END
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER controlar_cupo_max_trigger
+AFTER INSERT OR DELETE ON asiste
+FOR EACH ROW
+EXECUTE FUNCTION controlar_cupo_max();
