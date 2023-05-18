@@ -67,7 +67,7 @@ CREATE TABLE clase (
     cupo_max integer NOT NULL,
     dni_secretaria integer NOT NULL,
     dni_instructor integer NOT NULL,
-	CONSTRAINT pkCod_clase PRIMARY KEY (cod_clase),
+    CONSTRAINT pkCod_clase PRIMARY KEY (cod_clase),
     CONSTRAINT fksecretaria FOREIGN KEY (dni_secretaria) REFERENCES secretaria ON DELETE CASCADE,
     CONSTRAINT fkinstructor_res FOREIGN KEY (dni_instructor) REFERENCES instructor ON DELETE CASCADE
 );
@@ -97,7 +97,7 @@ CREATE TABLE material (
     costo integer NOT NULL,
     dni_instructor integer NOT NULL,
     cod_clase integer NOT NULL,
-	CONSTRAINT pkNro_material PRIMARY KEY (nro_material),
+    CONSTRAINT pkNro_material PRIMARY KEY (nro_material),
     CONSTRAINT fkdicta FOREIGN KEY (dni_instructor, cod_clase) REFERENCES dicta ON DELETE CASCADE
 );
 
@@ -110,3 +110,19 @@ CREATE TABLE auditoria_costos (
     costo_nuevo integer NOT NULL,
     usuario varchar(50) NOT NULL
 );
+
+create or replace function cambios_auditoria() 
+returns Trigger as 
+$$
+	begin
+		INSERT INTO auditoria_costos (nro_material, fecha_del_cambio, costo_anterior, costo_nuevo, usuario)
+    	VALUES (NEW.nro_material, NOW(), OLD.costo, NEW.costo, current_user);
+			RETURN NEW;
+	end
+$$ LANGUAGE 'plpgsql';
+
+create or replace trigger cambios_auditoria
+after update on material
+for each row
+execute function cambios_auditoria();
+
