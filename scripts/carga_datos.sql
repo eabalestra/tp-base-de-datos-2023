@@ -1,3 +1,5 @@
+SET search_path TO maneja_seguro;
+
 -- Insertar registros en la tabla "cliente"
 INSERT INTO cliente (dni_cliente, nombre, apellido, direccion) 
 VALUES (1, 'Juan', 'Pérez', 'Calle A 123');
