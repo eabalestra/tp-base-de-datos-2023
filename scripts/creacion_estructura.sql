@@ -6,28 +6,28 @@ SET search_path TO maneja_seguro;
 DROP TABLE IF EXISTS cliente;
 CREATE TABLE cliente (
     dni_cliente integer NOT NULL,
-    nombre varchar(20) NOT NULL,
-    apellido varchar(20) NOT NULL,
-    direccion varchar(50) NOT NULL,
+    nombre varchar(30) NOT NULL,
+    apellido varchar(30) NOT NULL,
+    direccion varchar(30) NOT NULL,
 	CONSTRAINT pkCliente PRIMARY KEY (dni_cliente)
 );
 
 DROP TABLE IF EXISTS secretaria;
 CREATE TABLE secretaria (
     dni_secretaria integer NOT NULL,
-    nombre varchar(20) NOT NULL,
-    apellido varchar(20) NOT NULL,
-    direccion varchar(50) NOT NULL,
-    titulo varchar(20) NOT NULL,
+    nombre varchar(30) NOT NULL,
+    apellido varchar(30) NOT NULL,
+    direccion varchar(60) NOT NULL,
+    titulo varchar(30) NOT NULL,
 	CONSTRAINT pkSecretaria PRIMARY KEY (dni_secretaria)
 );
 
 DROP TABLE IF EXISTS mecanico;
 CREATE TABLE mecanico (
     dni_mecanico integer NOT NULL,
-    nombre varchar(20) NOT NULL,
-    apellido varchar(20) NOT NULL,
-    direccion varchar(50) NOT NULL,
+    nombre varchar(30) NOT NULL,
+    apellido varchar(30) NOT NULL,
+    direccion varchar(60) NOT NULL,
 	CONSTRAINT pkMecanico PRIMARY KEY (dni_mecanico)
 );
 
@@ -49,10 +49,10 @@ CREATE TABLE cargo (
 DROP TABLE IF EXISTS instructor;
 CREATE TABLE instructor (
     dni_instructor integer NOT NULL,
-    nombre varchar(20) NOT NULL,
-    apellido varchar(20) NOT NULL,
-    direccion varchar(50) NOT NULL,
-    carnet varchar(20) NOT NULL,
+    nombre varchar(30) NOT NULL,
+    apellido varchar(30) NOT NULL,
+    direccion varchar(60) NOT NULL,
+    carnet varchar(30) NOT NULL,
     cod_cargo integer NOT NULL,
 	CONSTRAINT pkInstructor PRIMARY KEY (dni_instructor),
     CONSTRAINT tipo_carnet CHECK (carnet IN ('B2','B3','C1')),
@@ -62,8 +62,8 @@ CREATE TABLE instructor (
 DROP TABLE IF EXISTS clase;
 CREATE TABLE clase (
     cod_clase serial NOT NULL,
-    nombre varchar(20) NOT NULL,
-    descripcion varchar(100) NOT NULL,
+    nombre varchar(50) NOT NULL,
+    descripcion varchar(200) NOT NULL,
     cupo_max integer NOT NULL,
     dni_secretaria integer NOT NULL,
     dni_instructor integer NOT NULL,
