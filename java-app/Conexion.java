@@ -5,6 +5,7 @@ import java.sql.*;
  */
 public class Conexion {
   //Establece la conexion
+
   private static String url = "jdbc:postgresql://localhost:5432/postgres";
   private static String username = "postgres";
   private static String password = "99428143";

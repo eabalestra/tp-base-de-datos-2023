@@ -1,5 +1,5 @@
 import java.sql.*;
-import java.util.List;
+//import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -36,15 +36,14 @@ public class App {
 
         switch (opcion) {
           case "1":
-            //insertarClase();
+            insertarClase();
             break;
 
           case "2":
-            //registrarCliente();
+            registrarCliente();
             break;
 
           case "3":
-            
             listarRegistroDeClientes();
             break;
 
@@ -59,23 +58,10 @@ public class App {
       }
 
     } catch (ClassNotFoundException cnfe) {
-
       System.err.println("Error loading driver: " + cnfe);
-
     } catch (SQLException sqle) {
-      try	
-        {
-         System.err.println("Antes rollback: " + sqle);
-         Connection connection = Conexion.getInstance();
-         connection.rollback();
-         System.err.println("Error Se produjo una Excepcion accediendo a la base de datoas: " + sqle);
-         sqle.printStackTrace();
-        } 
-        catch(Exception e)
-        {
-          e.printStackTrace();
-          System.err.println("Error Ejecutando el rollback de la transaccion: " + e.getMessage());
-        }
+      sqle.printStackTrace();
+      System.err.println("Error connecting: " + sqle);
     }
 
   }
@@ -85,7 +71,7 @@ public class App {
    */
   public static void imprimirMenu(){
     System.out.println("-------------------------------");
-    System.out.println(" ESCUELA DE MANEJO");
+    System.out.println(" ESCUELA DE MANEJO ");
     System.out.println("-------------------------------");
     System.out.println("1) Insertar nueva clase.");
     System.out.println("2) Registrar un nuevo cliente.");
@@ -101,20 +87,49 @@ public class App {
    */
   private static void listarRegistroDeClientes() throws SQLException{
     
+    try {
+      Connection connection = Conexion.getInstance();
+
+      String query = "SELECT maneja_seguro.cliente.dni_cliente, maneja_seguro.cliente.nombre, maneja_seguro.cliente.apellido, maneja_seguro.cliente.direccion FROM maneja_seguro.cliente JOIN maneja_seguro.asiste ON (maneja_seguro.asiste.dni_cliente = maneja_seguro.cliente.dni_cliente)";
+
+      Statement statement = connection.createStatement();
+
+      ResultSet resultSet = statement.executeQuery(query);
+      
+      System.out.println("Listado de clientes: \n");
+      while(resultSet.next()){
+        System.out.print("* DNI: " + resultSet.getString("dni_cliente"));
+        System.out.print("; Nombre: "+resultSet.getString("nombre"));
+        System.out.print("; Apellido: "+resultSet.getString("apellido"));
+        System.out.print("; Direccion: "+resultSet.getString("direccion"));
+        System.out.print("\n\n");
+      }
+      
+      resultSet.close();
+    } catch (Exception e) {
+      System.out.println("ERROR: "+e);
+    }
+
+  }
+
+  private static void insertarClase() throws SQLException{
+    
     Connection connection = Conexion.getInstance();
 
-    String query = "ACOMODAR CONSULTA";
+    String query = "SET search_path TO maneja_seguro; SELECT * FROM cliente";
 
     PreparedStatement statement = connection.prepareStatement(query);
+
     ResultSet resultSet = statement.executeQuery();
-    System.out.println("Listado de clientes: \n");
+
     while(resultSet.next()){
-      System.out.print("* DNI: " + resultSet.getString("dni_cliente"));
-      System.out.print("; Nombre: "+resultSet.getString("nombre"));
-      System.out.print("; Apellido: "+resultSet.getString("apellido"));
-      System.out.print("; Direccion: "+resultSet.getString("direccion"));
+      System.out.println(1);
       System.out.print("\n\n");
     }
+
+  }
+
+  private static void registrarCliente(){
 
   }
 
