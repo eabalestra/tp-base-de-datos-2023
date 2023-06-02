@@ -38,9 +38,9 @@ public class App {
           case "1":
             insertarClase();
             break;
-
+          
           case "2":
-            registrarCliente();
+            insertarCliente();
             break;
 
           case "3":
@@ -86,11 +86,10 @@ public class App {
    * @throws SQLException
    */
   private static void listarRegistroDeClientes() throws SQLException{
-    
     try {
       Connection connection = Conexion.getInstance();
 
-      String query = "SELECT maneja_seguro.cliente.dni_cliente, maneja_seguro.cliente.nombre, maneja_seguro.cliente.apellido, maneja_seguro.cliente.direccion FROM maneja_seguro.cliente JOIN maneja_seguro.asiste ON (maneja_seguro.asiste.dni_cliente = maneja_seguro.cliente.dni_cliente)";
+      String query = "SELECT cliente.dni_cliente, cliente.nombre, cliente.apellido, cliente.direccion FROM cliente JOIN asiste ON (asiste.dni_cliente = cliente.dni_cliente)";
 
       Statement statement = connection.createStatement();
 
@@ -109,27 +108,38 @@ public class App {
     } catch (Exception e) {
       System.out.println("ERROR: "+e);
     }
-
   }
 
-  private static void insertarClase() throws SQLException{
-    
-    Connection connection = Conexion.getInstance();
+  private static void insertarCliente() throws SQLException {
+    try {
+      Connection connection = Conexion.getInstance();
+      Statement statement = connection.createStatement();
 
-    String query = "SET search_path TO maneja_seguro; SELECT * FROM cliente";
+      System.out.println("INGRESE LOS DATOS DEL CLIENTE: ");
+      System.out.print("Inserte DNI\n");
+      String dni = sc.next();
+      System.out.print("Inserte nombre\n");
+      String nombre = sc.next();
+      System.out.print("Inserte apellido\n");
+      String apellido = sc.next();
+      System.out.print("Inserte direccion\n");
+      String direccion = sc.next();
 
-    PreparedStatement statement = connection.prepareStatement(query);
+      String query = "INSERT INTO cliente (dni_cliente, nombre, apellido, direccion) VALUES ('" + dni + "', '" + nombre + "', '" + apellido + "', '" + direccion + "');";
 
-    ResultSet resultSet = statement.executeQuery();
+      int resultInsert = statement.executeUpdate(query);
 
-    while(resultSet.next()){
-      System.out.println(1);
-      System.out.print("\n\n");
+      if (resultInsert == 1) {
+          System.out.print("Insertado correctamente \n");
+      }
+
+    } catch (Exception e) {
+        System.out.println("ERROR: " + e);
     }
-
   }
 
-  private static void registrarCliente(){
+
+  private static void insertarClase(){
 
   }
 
