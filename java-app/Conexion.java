@@ -1,34 +1,20 @@
 import java.sql.*;
 
+/**
+ * 
+ */
+public class Conexion {
+  //Establece la conexion
+  private static String url = "jdbc:postgresql://localhost:5432/postgres";
+  private static String username = "postgres";
+  private static String password = "99428143";
+  private static Connection connection = null;
 
-
- public class Conexion {
-
-  public static void main(String[] args) {
-
-    String driver = "org.postgresql.Driver";
-    String url = "jdbc:postgresql://localhost:5432/maneja_seguro";
-    String username = "postgres";
-    String password = "123456";
-
-    try {
-
-      Class.forName(driver);
-
-      Connection connection = DriverManager.getConnection(url, username, password);
-
-      String query = "SELECT * FROM cliente ";
-      PreparedStatement statement = connection.prepareStatement(query);
-      ResultSet resultSet = statement.executeQuery();
-
-      while (resultSet.next()) {
-        System.out.println(resultSet.getInt("id"));
-      }
-
-    } 
-    catch (SQLException e) {
-      System.out.println("Error: "+ e);;
+  public static Connection getInstance() throws SQLException{
+    if (connection == null){
+      connection = DriverManager.getConnection(url, username, password);
     }
+    return connection;
   }
 
-}
+} // end Conexion

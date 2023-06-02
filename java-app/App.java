@@ -11,7 +11,7 @@ public class App {
   private static final String postgresDriver = "org.postgresql.Driver";
   private static final String EXIT = "4";
   private static final String START = "";
-  private static final List<String> tiposCarnet = List.of("B1","B2","B3");
+  //private static final List<String> tiposCarnet = List.of("B1","B2","B3");
   private static Scanner sc = new Scanner(System.in);
   //
 
@@ -44,6 +44,7 @@ public class App {
             break;
 
           case "3":
+            
             listarRegistroDeClientes();
             break;
 
@@ -78,6 +79,21 @@ public class App {
     }
 
   }
+  
+  /**
+   * 
+   */
+  public static void imprimirMenu(){
+    System.out.println("-------------------------------");
+    System.out.println(" ESCUELA DE MANEJO");
+    System.out.println("-------------------------------");
+    System.out.println("1) Insertar nueva clase.");
+    System.out.println("2) Registrar un nuevo cliente.");
+    System.out.println("3) Listar registro de clientes.");
+    System.out.println("4) Salir");
+    System.out.println("--------------------------------");
+    System.out.print("Seleccione una opcion (1 a 4): ");
+  }
 
   /**
    * Funcion que lista los clientes.
@@ -87,7 +103,7 @@ public class App {
     
     Connection connection = Conexion.getInstance();
 
-    String query = "SELECT dni_cliente, nombre, apellido, direccion FROM asiste as a JOIN cliente as c ON(c.dni_cliente = a.dni_cliente) ORDER BY apellido;";
+    String query = "ACOMODAR CONSULTA";
 
     PreparedStatement statement = connection.prepareStatement(query);
     ResultSet resultSet = statement.executeQuery();
@@ -101,91 +117,5 @@ public class App {
     }
 
   }
-
-  public static void imprimirMenu(){
-    System.out.println("-------------------------------");
-    System.out.println(" ESCUELA DE MANEJO");
-    System.out.println("-------------------------------");
-    System.out.println("1) Insertar nueva clase.");
-    System.out.println("2) Registrar un nuevo cliente.");
-    System.out.println("3) Listar registro de clientes.");
-    System.out.println("4) Salir");
-    System.out.println("--------------------------------");
-    System.out.print("Seleccione una opcion (1 a 4): ");
-  }
-
-  // public static void insertarCliente(Connection c){
-  //   try (Scanner scanner = new Scanner(System.in)) {
-  //     System.out.print("Inserte DNI\n");
-  //     String dni = scanner.nextLine();
-  //     System.out.print("Inserte nombre\n");
-  //     String nombre = scanner.nextLine();
-  //     System.out.print("Inserte apellido\n");
-  //     String apellido = scanner.nextLine();
-  //     System.out.print("Inserte direccion\n");
-  //     String direccion = scanner.nextLine();
-  //     try{
-  //     Statement statement = (Statement) c.createStatement();
-  //     String query = "INSERT INTO cliente (dni_cliente, nombre, apellido, direccion,) VALUES (\""+dni+"\", \""+nombre+"\", \""+apellido+"\", \""+direccion+"\");";
-  //     int resultInsert = ((java.sql.Statement) statement).executeUpdate(query);
-  //     if(resultInsert==1){
-  //       System.out.print("Insertado correctamente \n");
-  //     }
-  //     else{
-  //       System.out.print("Error: por favor intente de nuevo \n");
-  //     }
-  //     }
-  //     catch(Exception e){ System.out.println(e);}
-  //   }
-  // }
-
-  // public static void insertarClase(Connection c){
-  //   try (Scanner scanner = new Scanner(System.in)) {
-  //     System.out.print("Inserte codigo de la clase\n");
-  //     String cod_clase = scanner.nextLine();
-  //     System.out.print("Inserte nombre\n");
-  //     String nombre = scanner.nextLine();
-  //     System.out.print("Inserte descripcion\n");
-  //     String descripcion = scanner.nextLine();
-  //     System.out.print("Inserte cupo maximo\n");
-  //     String cupo = scanner.nextLine();
-  //     System.out.print("Inserte DNI de la secretaria\n");
-  //     String dni_Secretaria = scanner.nextLine();
-  //     System.out.print("Inserte DNI del instructor\n");
-  //     String dni_Instructor = scanner.nextLine();
-  //     try{
-  //     Statement statement = (Statement) c.createStatement();
-  //     String query = "INSERT INTO clase (cod_clase, nombre, descripcion, cupo_max, dni_secretaria, dni_instructor) VALUES (\""+cod_clase+"\", \""+nombre+"\", \""+descripcion+"\", \""+cupo+"\",\""+dni_Secretaria+"\",\""+dni_Instructor+"\");";
-  //     int resultInsert = ((java.sql.Statement) statement).executeUpdate(query);
-  //     if(resultInsert==1){
-  //       System.out.print("Insertado correctamente \n");
-  //     }
-  //     else{
-  //       System.out.print("Error: por favor intente de nuevo \n");
-  //     }
-  //     }
-  //     catch(Exception e){ System.out.println(e);}
-  //   }
-  // }
-
-  // public static void clienteAsisteClase(Connection c){
-  //   Scanner scanner = new Scanner(System.in);
-  //   System.out.print("Inserte DNI del cliente\n");
-  //   String dni = scanner.nextLine();
-  //   System.out.print("Inserte codigo de la clase\n");
-  //   String cod_clase = scanner.nextLine();
-  //   try{
-  //   Statement statement = c.createStatement();
-  //   String query = "INSERT INTO asiste (dni_cliente, cod_clase) VALUES (\""+dni+"\", \""+cod_clase+"\");";
-  //   int resultInsert = statement.executeUpdate(query);
-  //   if(resultInsert==1){
-  //     System.out.print("Insertado correctamente \n");
-  //   }
-  //   else{
-  //     System.out.print("Error: por favor intente de nuevo \n");
-  //   }
-  //   }
-  //   catch(Exception e){ System.out.println(e);}
-  // }
 
 }
