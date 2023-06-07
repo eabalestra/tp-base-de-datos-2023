@@ -148,9 +148,6 @@ public class App {
       Connection connection = Conexion.getInstance();
       Statement statement = connection.createStatement();
 
-      System.out.print("Inserte codigo de la clase\n");
-      String cod_clase = sc.next();
-      sc.nextLine();
       System.out.print("Inserte nombre\n");
       String nombre = sc.nextLine();
       sc.nextLine();
@@ -167,10 +164,10 @@ public class App {
       String dni_Instructor = sc.next();
       sc.nextLine();
 
-      String query = "INSERT INTO maneja_seguro.clase (cod_clase, nombre, descripcion, cupo_max, dni_secretaria, dni_instructor) VALUES ('" + cod_clase + "', '" + nombre + "', '" + descripcion + "', '" + cupo + "', '" + dni_Secretaria + "', '" + dni_Instructor + "');";
-      
+      String query = "INSERT INTO maneja_seguro.clase (nombre, descripcion, cupo_max, dni_secretaria, dni_instructor) VALUES ('" + nombre + "', '" + descripcion + "', '" + cupo + "', '" + dni_Secretaria + "', '" + dni_Instructor + "');";
+
       int resultInsert = statement.executeUpdate(query);
-      
+
       if(resultInsert==1){
         System.out.print("Insertada correctamente \n");
       }
@@ -192,7 +189,7 @@ public class App {
       System.out.print("Inserte codigo de la clase\n");
       String cod_clase = sc.next();
       
-      String query = "INSERT INTO maneja_seguro.asiste (dni_cliente, cod_clase) VALUES ('"+dni+"', '"+cod_clase+"');";
+      String query = "INSERT INTO asiste (dni_cliente, cod_clase) VALUES ('"+dni+"', '"+cod_clase+"');";
       
       int resultInsert = statement.executeUpdate(query);
       
@@ -203,7 +200,7 @@ public class App {
         System.out.print("Error: por favor intente de nuevo \n");
       }
       }
-      catch(Exception e){   System.out.println("Error al inscribir el cliente en la clase: " + e.getMessage());
+      catch(Exception e){   System.out.println("Error al insertar el cliente en la clase: " + e.getMessage());
       e.printStackTrace();} 
     }  
 
