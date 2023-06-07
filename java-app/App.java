@@ -9,7 +9,7 @@ public class App {
 
   // CONFIGURACION
   private static final String postgresDriver = "org.postgresql.Driver";
-  private static final String EXIT = "4";
+  private static final String EXIT = "5";
   private static final String START = "";
   //private static final List<String> tiposCarnet = List.of("B1","B2","B3");
   private static Scanner sc = new Scanner(System.in);
@@ -47,6 +47,10 @@ public class App {
             listarRegistroDeClientes();
             break;
 
+          case "4":
+            clienteAsisteClase();
+            break;  
+
           case EXIT:
             System.out.println("Muchas gracias!\n");
             break;
@@ -76,9 +80,10 @@ public class App {
     System.out.println("1) Insertar nueva clase.");
     System.out.println("2) Registrar un nuevo cliente.");
     System.out.println("3) Listar registro de clientes.");
-    System.out.println("4) Salir");
+    System.out.println("4) Inscribir cliente a una clase.");
+    System.out.println("5) Salir");
     System.out.println("--------------------------------");
-    System.out.print("Seleccione una opcion (1 a 4): ");
+    System.out.print("Seleccione una opcion (1 a 5): ");
   }
 
   /**
@@ -125,7 +130,7 @@ public class App {
       System.out.print("Inserte direccion\n");
       String direccion = sc.next();
 
-      String query = "INSERT INTO cliente (dni_cliente, nombre, apellido, direccion) VALUES ('" + dni + "', '" + nombre + "', '" + apellido + "', '" + direccion + "');";
+      String query = "INSERT INTO maneja_seguro.cliente (dni_cliente, nombre, apellido, direccion) VALUES ('" + dni + "', '" + nombre + "', '" + apellido + "', '" + direccion + "');";
 
       int resultInsert = statement.executeUpdate(query);
 
@@ -138,9 +143,68 @@ public class App {
     }
   }
 
-
   private static void insertarClase(){
+    try {
+      Connection connection = Conexion.getInstance();
+      Statement statement = connection.createStatement();
 
-  }
+      System.out.print("Inserte codigo de la clase\n");
+      String cod_clase = sc.next();
+      sc.nextLine();
+      System.out.print("Inserte nombre\n");
+      String nombre = sc.nextLine();
+      sc.nextLine();
+      System.out.print("Inserte descripcion\n");
+      String descripcion = sc.nextLine();
+      sc.nextLine();
+      System.out.print("Inserte cupo maximo\n");
+      String cupo = sc.next();
+      sc.nextLine();
+      System.out.print("Inserte DNI de la secretaria\n");
+      String dni_Secretaria = sc.next();
+      sc.nextLine();
+      System.out.print("Inserte DNI del instructor\n");
+      String dni_Instructor = sc.next();
+      sc.nextLine();
+
+      String query = "INSERT INTO maneja_seguro.clase (cod_clase, nombre, descripcion, cupo_max, dni_secretaria, dni_instructor) VALUES ('" + cod_clase + "', '" + nombre + "', '" + descripcion + "', '" + cupo + "', '" + dni_Secretaria + "', '" + dni_Instructor + "');";
+      
+      int resultInsert = statement.executeUpdate(query);
+      
+      if(resultInsert==1){
+        System.out.print("Insertada correctamente \n");
+      }
+      else{
+        System.out.print("Error: por favor intente de nuevo \n");
+      }
+      }
+      catch(Exception e){ System.out.println(e);} 
+    }
+
+    private static void clienteAsisteClase(){
+      try{
+      Connection connection = Conexion.getInstance();
+      Statement statement = connection.createStatement();
+
+     
+      System.out.print("Inserte DNI del cliente\n");
+      String dni = sc.next();
+      System.out.print("Inserte codigo de la clase\n");
+      String cod_clase = sc.next();
+      
+      String query = "INSERT INTO maneja_seguro.asiste (dni_cliente, cod_clase) VALUES ('"+dni+"', '"+cod_clase+"');";
+      
+      int resultInsert = statement.executeUpdate(query);
+      
+      if(resultInsert==1){
+        System.out.print("Insertado correctamente \n");
+      }
+      else{
+        System.out.print("Error: por favor intente de nuevo \n");
+      }
+      }
+      catch(Exception e){   System.out.println("Error al inscribir el cliente en la clase: " + e.getMessage());
+      e.printStackTrace();} 
+    }  
 
 }
