@@ -149,20 +149,17 @@ public class App {
       Statement statement = connection.createStatement();
 
       System.out.print("Inserte nombre\n");
-      String nombre = sc.nextLine();
+      String nombre = sc.next();
       sc.nextLine();
       System.out.print("Inserte descripcion\n");
       String descripcion = sc.nextLine();
-      sc.nextLine();
       System.out.print("Inserte cupo maximo\n");
       String cupo = sc.next();
-      sc.nextLine();
       System.out.print("Inserte DNI de la secretaria\n");
       String dni_Secretaria = sc.next();
-      sc.nextLine();
       System.out.print("Inserte DNI del instructor\n");
       String dni_Instructor = sc.next();
-      sc.nextLine();
+
 
       String query = "INSERT INTO maneja_seguro.clase (nombre, descripcion, cupo_max, dni_secretaria, dni_instructor) VALUES ('" + nombre + "', '" + descripcion + "', '" + cupo + "', '" + dni_Secretaria + "', '" + dni_Instructor + "');";
 
