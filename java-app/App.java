@@ -79,7 +79,7 @@ public class App {
     System.out.println("-------------------------------");
     System.out.println("1) Insertar nueva clase.");
     System.out.println("2) Registrar un nuevo cliente.");
-    System.out.println("3) Listar registro de clientes.");
+    System.out.println("3) Listar registro de clientes que asisten a alguna clase.");
     System.out.println("4) Inscribir cliente a una clase.");
     System.out.println("5) Salir");
     System.out.println("--------------------------------");
@@ -94,7 +94,7 @@ public class App {
     try {
       Connection connection = Conexion.getInstance();
 
-      String query = "SELECT cliente.dni_cliente, cliente.nombre, cliente.apellido, cliente.direccion FROM cliente JOIN asiste ON (asiste.dni_cliente = cliente.dni_cliente)";
+      String query = "SET search_path TO maneja_seguro; SELECT maneja_seguro.cliente.dni_cliente, maneja_seguro.cliente.nombre, maneja_seguro.cliente.apellido, maneja_seguro.cliente.direccion FROM maneja_seguro.cliente JOIN maneja_seguro.asiste ON (maneja_seguro.asiste.dni_cliente = maneja_seguro.cliente.dni_cliente)";
 
       Statement statement = connection.createStatement();
 
@@ -130,7 +130,7 @@ public class App {
       System.out.print("Inserte direccion\n");
       String direccion = sc.next();
 
-      String query = "INSERT INTO maneja_seguro.cliente (dni_cliente, nombre, apellido, direccion) VALUES ('" + dni + "', '" + nombre + "', '" + apellido + "', '" + direccion + "');";
+      String query = "SET search_path TO maneja_seguro; INSERT INTO maneja_seguro.cliente (dni_cliente, nombre, apellido, direccion) VALUES ('" + dni + "', '" + nombre + "', '" + apellido + "', '" + direccion + "');";
 
       int resultInsert = statement.executeUpdate(query);
 
@@ -161,7 +161,7 @@ public class App {
       String dni_Instructor = sc.next();
 
 
-      String query = "INSERT INTO maneja_seguro.clase (nombre, descripcion, cupo_max, dni_secretaria, dni_instructor) VALUES ('" + nombre + "', '" + descripcion + "', '" + cupo + "', '" + dni_Secretaria + "', '" + dni_Instructor + "');";
+      String query = "SET search_path TO maneja_seguro; INSERT INTO maneja_seguro.clase (nombre, descripcion, cupo_max, dni_secretaria, dni_instructor) VALUES ('" + nombre + "', '" + descripcion + "', '" + cupo + "', '" + dni_Secretaria + "', '" + dni_Instructor + "');";
 
       int resultInsert = statement.executeUpdate(query);
 
