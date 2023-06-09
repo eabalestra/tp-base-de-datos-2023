@@ -94,7 +94,7 @@ public class App {
     try {
       Connection connection = Conexion.getInstance();
 
-      String query = "SET search_path TO maneja_seguro; SELECT maneja_seguro.cliente.dni_cliente, maneja_seguro.cliente.nombre, maneja_seguro.cliente.apellido, maneja_seguro.cliente.direccion FROM maneja_seguro.cliente JOIN maneja_seguro.asiste ON (maneja_seguro.asiste.dni_cliente = maneja_seguro.cliente.dni_cliente)";
+      String query = "SELECT maneja_seguro.cliente.dni_cliente, maneja_seguro.cliente.nombre, maneja_seguro.cliente.apellido, maneja_seguro.cliente.direccion FROM maneja_seguro.cliente JOIN maneja_seguro.asiste ON (maneja_seguro.asiste.dni_cliente = maneja_seguro.cliente.dni_cliente)";
 
       Statement statement = connection.createStatement();
 
@@ -127,10 +127,11 @@ public class App {
       String nombre = sc.next();
       System.out.print("Inserte apellido\n");
       String apellido = sc.next();
+      sc.nextLine();
       System.out.print("Inserte direccion\n");
-      String direccion = sc.next();
+      String direccion = sc.nextLine();
 
-      String query = "SET search_path TO maneja_seguro; INSERT INTO maneja_seguro.cliente (dni_cliente, nombre, apellido, direccion) VALUES ('" + dni + "', '" + nombre + "', '" + apellido + "', '" + direccion + "');";
+      String query = "INSERT INTO maneja_seguro.cliente (dni_cliente, nombre, apellido, direccion) VALUES ('" + dni + "', '" + nombre + "', '" + apellido + "', '" + direccion + "');";
 
       int resultInsert = statement.executeUpdate(query);
 
@@ -161,7 +162,7 @@ public class App {
       String dni_Instructor = sc.next();
 
 
-      String query = "SET search_path TO maneja_seguro; INSERT INTO maneja_seguro.clase (nombre, descripcion, cupo_max, dni_secretaria, dni_instructor) VALUES ('" + nombre + "', '" + descripcion + "', '" + cupo + "', '" + dni_Secretaria + "', '" + dni_Instructor + "');";
+      String query = "INSERT INTO maneja_seguro.clase (nombre, descripcion, cupo_max, dni_secretaria, dni_instructor) VALUES ('" + nombre + "', '" + descripcion + "', '" + cupo + "', '" + dni_Secretaria + "', '" + dni_Instructor + "');";
 
       int resultInsert = statement.executeUpdate(query);
 
@@ -186,7 +187,7 @@ public class App {
       System.out.print("Inserte codigo de la clase\n");
       String cod_clase = sc.next();
       
-      String query = "INSERT INTO asiste (dni_cliente, cod_clase) VALUES ('"+dni+"', '"+cod_clase+"');";
+      String query = "INSERT INTO maneja_seguro.asiste (dni_cliente, cod_clase) VALUES ('"+dni+"', '"+cod_clase+"');";
       
       int resultInsert = statement.executeUpdate(query);
       
